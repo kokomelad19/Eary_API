@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
-const { userStatus, userTypes } = require("../../enums/users");
+const jwt = require("jsonwebtoken");
+const { userStatus, userTypes } = require("../../types/enums/users");
 
-export class User {
-  constructor(id, name, email, password, phone, status, type) {
-    this.id = id;
+class User {
+  constructor(name, email, password, phone, status, type, id) {
+    this.id = id ?? undefined;
     this.name = name;
     this.email = email;
     this.password = password;
@@ -19,4 +20,15 @@ export class User {
   async comparePasswords(password) {
     return await bcrypt.compare(password, this.password);
   }
+
+  generateJWT() {
+    return jwt.sign(
+      {
+        id: this.id,
+      },
+      process.env.TOKEN_SECRET
+    );
+  }
 }
+
+module.exports = User;

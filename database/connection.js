@@ -19,18 +19,15 @@ const createDatabaseTablesQueries = fs
   .trim();
 
 // Sync tables
-(async () => {
+databaseConnection.syncTables = async () => {
   try {
     const queries = createDatabaseTablesQueries.split(";");
     for (const query of queries) {
       if (query.length > 0) await databaseConnection.runQuery(query);
     }
-
-    console.log("Database connected successfully 🚀🚀");
   } catch (err) {
-    console.log("Error while connecting database ", err);
     throw err;
   }
-})();
+};
 
 module.exports = databaseConnection;

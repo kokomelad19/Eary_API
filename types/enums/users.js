@@ -1,9 +1,9 @@
-export const userStatus = {
+exports.userStatus = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 };
 
-export const userTypes = {
+exports.userTypes = {
   USER: "user",
   ADMIN: "admin",
 };
