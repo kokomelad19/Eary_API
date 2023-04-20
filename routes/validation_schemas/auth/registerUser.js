@@ -9,14 +9,10 @@ exports.registerSchema = {
   email: {
     isString: { errorMessage: "Email is required" },
     isEmail: { errorMessage: "Please send a valid email" },
-    query: { trim: true },
   },
   password: {
     isString: { errorMessage: "Password is required" },
-    isLength: {
-      options: { min: 8 },
-      errorMessage: "Password must be at least 8 characters",
-    },
+    isStrongPassword: { errorMessage: "Password is too poor" },
   },
   phone: {
     isString: { errorMessage: "Phone is required" },
