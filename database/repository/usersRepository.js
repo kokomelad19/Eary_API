@@ -15,7 +15,12 @@ class UsersRepository {
 
   async createUser(user) {
     try {
-      await databaseConnection.runQuery("INSERT INTO users SET ?", user);
+      const createdUser = await databaseConnection.runQuery(
+        "INSERT INTO users SET ?",
+        user
+      );
+
+      user.id = createdUser.insertId;
     } catch (err) {
       throw err;
     }

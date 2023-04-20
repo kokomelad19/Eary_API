@@ -22,6 +22,8 @@ class User {
   }
 
   generateJWT() {
+    if (!this.id) throw new Error("invalid id in JWT generator");
+
     return jwt.sign(
       {
         id: this.id,

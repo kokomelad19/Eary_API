@@ -6,6 +6,7 @@ class CustomError {
       throw new Error("Invalid error messages @class CustomError");
 
     this.name = CustomError.name;
+    this.code = CustomError.name;
     this.statusCode = statusCode;
     this.errorMessage = errorMessage ?? [
       "Sorry currently system is unable to perform this action, Please contact support",
