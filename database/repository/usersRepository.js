@@ -1,3 +1,4 @@
+const User = require("../entities/user");
 const databaseConnection = require("../connection");
 
 class UsersRepository {
@@ -7,7 +8,7 @@ class UsersRepository {
         `SELECT * FROM users WHERE email = '${email}'`
       );
 
-      return user[0];
+      return user[0] ? new User(user[0]) : null;
     } catch (err) {
       throw err;
     }

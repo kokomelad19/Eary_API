@@ -15,7 +15,35 @@ exports.registerUserService = async (user) => {
     await usersRepository.createUser(user);
 
     // Generate JWT
-    const token = user.generateJWT();
+    const token = user.generateToken();
+
+    // return user
+    delete user.password;
+    return { user, tokens: { token } };
+  } catch (err) {
+    throw err;
+  }
+};
+
+exports.loginService = async (email, password) => {
+  try {
+    // Check Email existence
+    const user = await usersRepository.findByEmail(email);
+    if (!user) {
+      throw new CustomError(HttpStatus.BAD_REQUEST, [
+        "invalid email or password",
+      ]);
+    }
+
+    // Check Email correctness
+    if (!(await user.comparePasswords(password))) {
+      throw new CustomError(HttpStatus.BAD_REQUEST, [
+        "invalid email or password",
+      ]);
+    }
+
+    // Generate JWT Tokens
+    const token = user.generateToken();
 
     // return user
     delete user.password;

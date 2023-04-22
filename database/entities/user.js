@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { userStatus, userTypes } = require("../../types/enums/users");
 
 class User {
-  constructor(name, email, password, phone, status, type, id) {
+  constructor({ name, email, password, phone, status, type, id }) {
     this.id = id ?? undefined;
     this.name = name;
     this.email = email;
@@ -21,7 +21,7 @@ class User {
     return await bcrypt.compare(password, this.password);
   }
 
-  generateJWT() {
+  generateToken() {
     if (!this.id) throw new Error("invalid id in JWT generator");
 
     return jwt.sign(
