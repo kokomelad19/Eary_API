@@ -28,7 +28,8 @@ const handleUniqueViolation = (err) => {
     .reverse()[0]
     .split(".")
     .reverse()[0]
-    .replace("'", "");
+    .trim()
+    .replace(/'/g, "");
 
   return new ErrorResponse(HttpStatus.BAD_REQUEST, [`${key} is already exist`]);
 };
