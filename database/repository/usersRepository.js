@@ -2,24 +2,14 @@ const User = require("../entities/user");
 const databaseConnection = require("../connection");
 
 class UsersRepository {
-  async findByEmail(email) {
+  async findOne(findArgs) {
     try {
       const user = await databaseConnection.runQuery(
-        `SELECT * FROM users WHERE email = '${email}'`
+        `SELECT * FROM users WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")}`,
+        Object.values(findArgs)
       );
-
-      return user[0] ? new User(user[0]) : null;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async findByid(id) {
-    try {
-      const user = await databaseConnection.runQuery(
-        `SELECT * FROM users WHERE id = '${id}'`
-      );
-
       return user[0] ? new User(user[0]) : null;
     } catch (err) {
       throw err;
