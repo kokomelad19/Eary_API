@@ -3,24 +3,20 @@ const {
   registerUserController,
   loginController,
 } = require("../controllers/authController");
-const { registerSchema } = require("./validation_schemas/auth/registerUser");
-const { loginSchema } = require("./validation_schemas/auth/login");
-const { validateRequest } = require("../middlewares/validateRequest");
+const registerSchema = require("./validation_schemas/auth/registerUser");
+const loginSchema = require("./validation_schemas/auth/login");
+const validateRequest = require("../middlewares/validateRequest");
 
 const authRouter = Router();
 
 // register
 authRouter.post(
   "/register",
-  validateRequest(registerSchema, "body"),
+  validateRequest(registerSchema),
   registerUserController
 );
 
 // Login
-authRouter.post(
-  "/login",
-  validateRequest(loginSchema, "body"),
-  loginController
-);
+authRouter.post("/login", validateRequest(loginSchema), loginController);
 
 module.exports = authRouter;

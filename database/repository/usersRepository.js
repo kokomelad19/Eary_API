@@ -28,6 +28,19 @@ class UsersRepository {
       throw err;
     }
   }
+
+  async updateUser(findArgs, newUser) {
+    try {
+      await databaseConnection.runQuery(
+        `UPDATE users SET ? WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")}`,
+        [newUser, ...Object.values(findArgs)]
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = new UsersRepository();

@@ -1,4 +1,4 @@
-exports.loginSchema = {
+const loginSchema = {
   email: {
     isString: { errorMessage: "Email is required" },
     isEmail: { errorMessage: "Please send a valid email" },
@@ -8,3 +8,5 @@ exports.loginSchema = {
     notEmpty: { errorMessage: "Password is required" },
   },
 };
+
+module.exports = loginSchema;

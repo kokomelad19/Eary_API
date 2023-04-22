@@ -1,4 +1,4 @@
-const registerSchema = {
+const updateProfileSchema = {
   name: {
     isString: { errorMessage: "Name is required" },
     isLength: {
@@ -13,14 +13,10 @@ const registerSchema = {
       options: { trim: true, toLowerCase: true },
     },
   },
-  password: {
-    isString: { errorMessage: "Password is required" },
-    isStrongPassword: { errorMessage: "Password is too poor" },
-  },
   phone: {
     isString: { errorMessage: "Phone is required" },
     isMobilePhone: { errorMessage: "Invalid Phone number" },
   },
 };
 
-module.exports = registerSchema;
+module.exports = updateProfileSchema;

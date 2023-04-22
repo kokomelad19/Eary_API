@@ -1,9 +1,9 @@
 const User = require("../database/entities/user");
+const catchAsync = require("../utils/catchAsync");
 const {
   registerUserService,
   loginService,
 } = require("../services/authService");
-const { catchAsync } = require("../utils/catchAsync");
 const HttpStatus = require("../constants/statusCodes");
 
 exports.registerUserController = catchAsync(async (req, res) => {

@@ -5,10 +5,10 @@ const { userStatus, userTypes } = require("../../types/enums/users");
 class User {
   constructor({ name, email, password, phone, status, type, id }) {
     this.id = id ?? undefined;
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.phone = phone;
+    this.name = name ?? undefined;
+    this.email = email ?? undefined;
+    this.password = password ?? undefined;
+    this.phone = phone ?? undefined;
     this.status = status ?? userStatus["INACTIVE"];
     this.type = type ?? userTypes["USER"];
   }
@@ -34,7 +34,7 @@ class User {
 
   decodeToken(token) {
     try {
-      this.id = jwt.verify(token, process.env.TOKEN_SECRET)?.id;
+      this.id = jwt.verify(token, process.env.TOKEN_SECRET).id;
       return this;
     } catch (err) {
       throw err;
