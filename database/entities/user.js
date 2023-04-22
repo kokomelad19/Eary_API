@@ -31,6 +31,15 @@ class User {
       process.env.TOKEN_SECRET
     );
   }
+
+  decodeToken(token) {
+    try {
+      this.id = jwt.verify(token, process.env.TOKEN_SECRET)?.id;
+      return this;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = User;

@@ -28,7 +28,7 @@ exports.registerUserService = async (user) => {
 exports.loginService = async (email, password) => {
   try {
     // Check Email existence
-    const user = await usersRepository.findByEmail(email);
+    const user = await usersRepository.findOne({ email });
     if (!user) {
       throw new CustomError(HttpStatus.BAD_REQUEST, [
         "invalid email or password",

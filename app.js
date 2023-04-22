@@ -17,6 +17,7 @@ app.use("/api", mainRouter);
 app.use("*", notFoundRouterController);
 
 mainRouter.use("/auth", authRouter);
+
 //#endregion
 
 //#region Global Error Handler
