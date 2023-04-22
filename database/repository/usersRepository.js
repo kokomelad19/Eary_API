@@ -14,6 +14,18 @@ class UsersRepository {
     }
   }
 
+  async findByid(id) {
+    try {
+      const user = await databaseConnection.runQuery(
+        `SELECT * FROM users WHERE id = '${id}'`
+      );
+
+      return user[0] ? new User(user[0]) : null;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async createUser(user) {
     try {
       const createdUser = await databaseConnection.runQuery(
