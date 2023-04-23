@@ -66,7 +66,10 @@ class UsersRepository {
           : undefined
       );
 
-      return users.map((user) => new User(user));
+      return users.map((user) => {
+        delete user.password;
+        return new User(user);
+      });
     } catch (err) {
       throw err;
     }
