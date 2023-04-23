@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {
   notFoundRouterController,
 } = require("./controllers/notFoundRouteController");
@@ -11,6 +12,9 @@ const app = express();
 
 //#region Global Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("upload"));
+app.use(cors());
 //#endregion
 
 //#region App Routes
