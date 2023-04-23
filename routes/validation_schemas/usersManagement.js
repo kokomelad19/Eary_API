@@ -64,4 +64,8 @@ exports.updateUserSchema = {
     isString: { errorMessage: "Phone is required" },
     isMobilePhone: { errorMessage: "Invalid Phone number" },
   },
+  status: {
+    isString: { errorMessage: "invalid search" },
+    in: Object.values(userStatus),
+  },
 };
