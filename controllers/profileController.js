@@ -4,14 +4,14 @@ const catchAsync = require("../utils/catchAsync");
 const { updateProfileService } = require("../services/profileService");
 
 exports.getProfileController = catchAsync(async (_req, res) => {
-  delete res.locals.user.password;
-  return res.status(HttpStatus.OK).json(res.locals.user);
+  delete req.user.password;
+  return res.status(HttpStatus.OK).json(req.user);
 });
 
 exports.updateProfileController = catchAsync(async (req, res) => {
   await updateProfileService(
-    res.locals.user.id,
-    new User({ ...res.locals.user, ...req.body })
+    req.user.id,
+    new User({ ...req.user, ...req.body })
   );
 
   return res

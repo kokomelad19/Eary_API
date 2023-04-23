@@ -1,4 +1,15 @@
-const updateProfileSchema = {
+exports.loginSchema = {
+  email: {
+    isString: { errorMessage: "Email is required" },
+    isEmail: { errorMessage: "Please send a valid email" },
+  },
+  password: {
+    isString: { errorMessage: "Password is required" },
+    notEmpty: { errorMessage: "Password is required" },
+  },
+};
+
+exports.registerSchema = {
   name: {
     isString: { errorMessage: "Name is required" },
     isLength: {
@@ -13,10 +24,12 @@ const updateProfileSchema = {
       options: { trim: true, toLowerCase: true },
     },
   },
+  password: {
+    isString: { errorMessage: "Password is required" },
+    isStrongPassword: { errorMessage: "Password is too poor" },
+  },
   phone: {
     isString: { errorMessage: "Phone is required" },
     isMobilePhone: { errorMessage: "Invalid Phone number" },
   },
 };
-
-module.exports = updateProfileSchema;

@@ -3,8 +3,7 @@ const {
   registerUserController,
   loginController,
 } = require("../controllers/authController");
-const registerSchema = require("./validation_schemas/auth/registerUser");
-const loginSchema = require("./validation_schemas/auth/login");
+const { loginSchema, registerSchema } = require("./validation_schemas/auth");
 const validateRequest = require("../middlewares/validateRequest");
 
 const authRouter = Router();

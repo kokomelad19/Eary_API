@@ -24,7 +24,7 @@ const authorizationMiddleware = async (req, res, next) => {
     user = await usersRepository.findOne({ id: user.id });
     if (!user) return sendAuthroizationError(res);
 
-    res.locals.user = user;
+    req.user = user;
     return next();
   } catch (err) {
     return sendAuthroizationError(res);
