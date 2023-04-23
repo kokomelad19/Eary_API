@@ -2,8 +2,10 @@ const User = require("../database/entities/user");
 const CustomError = require("../utils/customError");
 const HttpStatus = require("../constants/statusCodes");
 const usersRepository = require("../database/repository/usersRepository");
+const databaseConnection = require("../database/connection");
 
 exports.registerUserService = async (user) => {
+  await databaseConnection.beginTransaction();
   try {
     // Check that user argument is instance of User entity
     if (!(user instanceof User)) throw new CustomError(HttpStatus.BAD_REQUEST);
@@ -17,10 +19,12 @@ exports.registerUserService = async (user) => {
     // Generate JWT
     const token = user.generateToken();
 
+    await databaseConnection.commit();
     // return user
     delete user.password;
     return { user, tokens: { token } };
   } catch (err) {
+    await databaseConnection.rollback();
     throw err;
   }
 };
