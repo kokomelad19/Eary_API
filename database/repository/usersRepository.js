@@ -104,6 +104,16 @@ class UsersRepository {
       throw err;
     }
   }
+
+  async deleteUser(userId) {
+    try {
+      await databaseConnection.runQuery(`DELETE FROM users WHERE id = ?`, [
+        userId,
+      ]);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = new UsersRepository();
