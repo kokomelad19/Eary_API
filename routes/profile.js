@@ -5,7 +5,7 @@ const {
 } = require("../controllers/profileController");
 const authorizationMiddleware = require("../middlewares/authorization");
 const validateRequest = require("../middlewares/validateRequest");
-const updateProfileSchema = require("./validation_schemas/profile/updateProfile");
+const { updateProfileSchema } = require("./validation_schemas/profile");
 
 const profileRouter = Router();
 
@@ -15,8 +15,8 @@ profileRouter.get("/", authorizationMiddleware, getProfileController);
 // Update Profile
 profileRouter.put(
   "/",
-  authorizationMiddleware,
   validateRequest(updateProfileSchema),
+  authorizationMiddleware,
   updateProfileController
 );
 

@@ -11,7 +11,8 @@ const validateRequest =
       );
 
       Object.keys(req[target]).map((key) => {
-        if (!Object.keys(schema).includes(key)) throw new Error();
+        if (!Object.keys(schema).includes(key))
+          throw new Error("invalid schema");
       });
 
       if (result.length > 0 && result.some((res) => res.errors.length > 0)) {
