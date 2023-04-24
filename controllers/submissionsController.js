@@ -3,6 +3,7 @@ const HttpStatus = require("../constants/statusCodes");
 const {
   submitAnswerService,
   getSubmissionsService,
+  getSubmissionDetailsService,
 } = require("../services/submissionsService");
 
 exports.submitAnswerController = catchAsync(async (req, res) => {
@@ -19,4 +20,12 @@ exports.getSubmissionsController = catchAsync(async (req, res) => {
     parseInt(req.query.size ?? "10")
   );
   return res.status(HttpStatus.OK).json(data);
+});
+
+exports.getSubmissionDetailsController = catchAsync(async (req, res) => {
+  const submissionDetails = await getSubmissionDetailsService(
+    req.params.submissionId,
+    req.user
+  );
+  return res.status(HttpStatus.OK).json(submissionDetails);
 });

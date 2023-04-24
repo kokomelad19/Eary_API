@@ -20,7 +20,7 @@ class SubmissionsRepository {
       const submissions = await databaseConnection.runQuery(
         `SELECT * FROM user_submissions_history ${
           userId ? "WHERE userId = ?" : ""
-        } LIMIT ${size} OFFSET ${(page - 1) * size};`,
+        } ORDER BY submittedAt DESC LIMIT ${size} OFFSET ${(page - 1) * size};`,
         userId ? [userId] : undefined
       );
 
@@ -42,6 +42,22 @@ class SubmissionsRepository {
       );
 
       return submission[0].count ?? 0;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async findOne(findArgs) {
+    try {
+      const submission = await databaseConnection.runQuery(
+        `SELECT * FROM user_submissions_history WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")} LIMIT 1;`,
+        Object.values(findArgs)
+      );
+      return submission[0]
+        ? Submissions.createFromQueryResult(submission[0])
+        : null;
     } catch (err) {
       throw err;
     }

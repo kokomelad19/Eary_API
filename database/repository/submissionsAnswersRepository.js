@@ -1,4 +1,5 @@
 const databaseConnection = require("../connection");
+const SubmissionsAnswers = require("../entities/submissionsAnswers");
 
 class SubmissionsAnswersRepository {
   async insertAnswers(submissionId, answers) {
@@ -18,6 +19,19 @@ class SubmissionsAnswersRepository {
       }
 
       return await Promise.all(promises);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async findBySubmissionId(submissionId) {
+    try {
+      const answers = await databaseConnection.runQuery(
+        `SELECT * FROM submissions_questions_answers WHERE submissionId = ?`,
+        [submissionId]
+      );
+
+      return answers.map((answer) => new SubmissionsAnswers(answer));
     } catch (err) {
       throw err;
     }

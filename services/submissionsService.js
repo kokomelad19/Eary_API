@@ -1,10 +1,22 @@
 const SubmissionsAnswers = require("../database/entities/submissionsAnswers");
 const Submissions = require("../database/entities/submissions");
+const CustomError = require("../utils/customError");
+const HttpStatus = require("../constants/statusCodes");
 const databaseConnection = require("../database/connection");
 const submissionsRepository = require("../database/repository/submissionsRepository");
 const submissionsAnswersRepository = require("../database/repository/submissionsAnswersRepository");
 const questionsRepository = require("../database/repository/questionsRepository");
 const { questionStatus } = require("../types/enums/questions");
+const { userTypes } = require("../types/enums/users");
+
+const checkSubmissionExistence = async (submissionId, user) => {
+  const isSubmissionExist = await submissionsRepository.findOne({
+    id: submissionId,
+    ...(user.type === userTypes.USER ? { userId: user.id } : {}),
+  });
+  if (!isSubmissionExist)
+    throw new CustomError(HttpStatus.NOT_FOUND, ["submission is not exist"]);
+};
 
 exports.submitAnswerService = async (userId, answers) => {
   await databaseConnection.beginTransaction();
@@ -61,6 +73,16 @@ exports.getSubmissionsService = async (userId, page, size) => {
     );
 
     return { total, submissions };
+  } catch (err) {
+    throw err;
+  }
+};
+
+exports.getSubmissionDetailsService = async (submissionId, user) => {
+  try {
+    await checkSubmissionExistence(submissionId, user);
+
+    return await submissionsAnswersRepository.findBySubmissionId(submissionId);
   } catch (err) {
     throw err;
   }

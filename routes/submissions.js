@@ -9,6 +9,9 @@ const {
   submitAnswerController,
   getSubmissionsController,
 } = require("../controllers/submissionsController");
+const {
+  getSubmissionDetailsController,
+} = require("../controllers/submissionsController");
 
 const submissionsRouter = Router();
 
@@ -25,15 +28,19 @@ submissionsRouter.post(
 // GET My history submissions
 submissionsRouter.get(
   "/my-history",
-  validateRequest(paginationSchema),
+  validateRequest(paginationSchema, "query"),
   getSubmissionsController
 );
 
 // GET User's Submissions By ID [ADMIN]
 submissionsRouter.get(
   "/user/:userId",
-  validateRequest(paginationSchema),
+  isAdminMiddleware,
+  validateRequest(paginationSchema, "query"),
   getSubmissionsController
 );
+
+// GET Submission Details [USER , ADMIN]
+submissionsRouter.get("/details/:submissionId", getSubmissionDetailsController);
 
 module.exports = submissionsRouter;
