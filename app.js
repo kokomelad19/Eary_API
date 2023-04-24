@@ -14,7 +14,7 @@ const app = express();
 //#region Global Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("upload"));
+app.use(express.static(process.env.UPLOAD_FOLDER_NAME));
 app.use(cors());
 //#endregion
 

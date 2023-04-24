@@ -26,7 +26,9 @@ const validateAnswers = (answers) => {
 const deleteAudioFile = async (question) => {
   try {
     await fs.promises.unlink(
-      `${__dirname}/../upload/${question.audio_file.split("/").reverse()[0]}`
+      `${__dirname}/../${process.env.UPLOAD_FOLDER_NAME}/${
+        question.audio_file.split("/").reverse()[0]
+      }`
     );
   } catch (err) {
     throw err;

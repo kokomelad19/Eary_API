@@ -4,8 +4,8 @@ const CustomError = require("../utils/customError");
 const HttpStatus = require("../constants/statusCodes");
 
 const storage = multer.diskStorage({
-  destination: (_req, file, cb) => {
-    cb(null, "upload/");
+  destination: (_req, _file, cb) => {
+    cb(null, `${process.env.UPLOAD_FOLDER_NAME}/`);
   },
   filename: (req, file, cb) => {
     const filePathName = Date.now() + path.extname(file.originalname);
