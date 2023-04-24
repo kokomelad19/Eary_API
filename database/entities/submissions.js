@@ -4,7 +4,7 @@ class Submissions {
     this.submittedAt = submittedAt ?? new Date().toISOString();
     this.allExamQuestionsNumber = answers.length ?? 0;
     this.correctQuestionsNumber =
-      answers.filter((ans) => ans.submittedAnswer.isValid === 1).length ?? 0;
+      answers.filter((ans) => ans.isValidAnswer === 1).length ?? 0;
     this.id = id ?? null;
   }
 }

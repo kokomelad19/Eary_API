@@ -1,7 +1,7 @@
 const databaseConnection = require("../connection");
 
 class SubmissionsAnswersRepository {
-  async insertAnswers(answers) {
+  async insertAnswers(submissionId, answers) {
     try {
       const promises = [];
 
@@ -9,7 +9,10 @@ class SubmissionsAnswersRepository {
         promises.push(
           databaseConnection.runQuery(
             "INSERT INTO submissions_questions_answers SET ?",
-            answer
+            {
+              ...answer,
+              submissionId,
+            }
           )
         );
       }
