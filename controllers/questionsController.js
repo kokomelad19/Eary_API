@@ -3,6 +3,7 @@ const {
   createQuestionWithAnswersService,
   getQuestionsWithAnswersService,
   deleteQuestionService,
+  updateQuestionWithAnswersService,
 } = require("../services/questionsService");
 const Questions = require("../database/entities/questions");
 const QuestionAnswers = require("../database/entities/questionAnswers");
@@ -31,4 +32,19 @@ exports.getQuestionsWithAnswersController = catchAsync(async (_req, res) => {
 exports.deleteQuestionController = catchAsync(async (req, res) => {
   await deleteQuestionService(req.params.questionId);
   return res.status(HttpStatus.NO_CONTENT).json();
+});
+
+exports.updateQuestionWithAnswersController = catchAsync(async (req, res) => {
+  await updateQuestionWithAnswersService(
+    req.params.questionId,
+    req.body,
+    req.body.answers.map(
+      (answer) =>
+        new QuestionAnswers({ ...answer, isValid: answer.isValid === "true" })
+    )
+  );
+
+  return res
+    .status(HttpStatus.OK)
+    .json({ message: "question is updated successfully 🔥" });
 });

@@ -1,4 +1,5 @@
 const databaseConnection = require("../connection");
+const Questions = require("../entities/questions");
 const HelperRepository = require("./helperRepository");
 
 class QuestionsRepository extends HelperRepository {
@@ -59,6 +60,33 @@ class QuestionsRepository extends HelperRepository {
         "DELETE FROM exam_questions WHERE id = ?",
         [questionId]
       );
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateQuestion(findArgs, newQuestion) {
+    try {
+      await databaseConnection.runQuery(
+        `UPDATE exam_questions SET ? WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")}`,
+        [newQuestion, ...Object.values(findArgs)]
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async findOne(findArgs) {
+    try {
+      const question = await databaseConnection.runQuery(
+        `SELECT * FROM exam_questions WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")} LIMIT 1;`,
+        Object.values(findArgs)
+      );
+      return question[0] ? new Questions(question[0]) : null;
     } catch (err) {
       throw err;
     }

@@ -9,17 +9,22 @@ const {
 } = require("../middlewares/audio_uploader");
 const {
   createQuestionsWithAnswers,
+  updateQuestionsWithAnswers,
 } = require("./validation_schemas/questions");
 const {
   createQuestionWithAnswersController,
   getQuestionsWithAnswersController,
   deleteQuestionController,
+  updateQuestionWithAnswersController,
 } = require("../controllers/questionsController");
 
 const questionsRouter = Router();
 
 // GLOBAL middlewares for this router
 questionsRouter.use(authorizationMiddleware, isActiveUserMiddleware);
+
+// GET ALL Questions [USER , ADMIN]
+questionsRouter.get("/", getQuestionsWithAnswersController);
 
 // CREATE QUESTION [ADMIN]
 questionsRouter.post(
@@ -31,14 +36,20 @@ questionsRouter.post(
   createQuestionWithAnswersController
 );
 
-// GET ALL Questions [USER , ADMIN]
-questionsRouter.get("/", getQuestionsWithAnswersController);
-
 // DELETE Question [ADMIN]
 questionsRouter.delete(
   "/:questionId",
   isAdminMiddleware,
   deleteQuestionController
+);
+
+// UPDATE Question [ADMIN]
+questionsRouter.put(
+  "/:questionId",
+  isAdminMiddleware,
+  uploadAudioFileMiddleware.single("audio_file"),
+  validateRequest(updateQuestionsWithAnswers),
+  updateQuestionWithAnswersController
 );
 
 module.exports = questionsRouter;

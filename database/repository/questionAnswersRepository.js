@@ -19,6 +19,19 @@ class QuestionAnswersRepository {
       throw err;
     }
   }
+
+  async deleteAnswer(findArgs) {
+    try {
+      await databaseConnection.runQuery(
+        `DELETE FROM question_answers WHERE ${Object.keys(findArgs)
+          .map((arg) => `${arg} = ?`)
+          .join(" AND ")};`,
+        Object.values(findArgs)
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = new QuestionAnswersRepository();

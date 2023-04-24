@@ -23,6 +23,29 @@ const validateAnswers = (answers) => {
   }
 };
 
+const deleteAudioFile = async (question) => {
+  try {
+    await fs.promises.unlink(
+      `${__dirname}/../upload/${question.audio_file.split("/").reverse()[0]}`
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
+const checkQuestionExistence = async (findArgs) => {
+  try {
+    const question = await questionsRepository.findOne(findArgs);
+
+    if (!question)
+      throw new CustomError(HttpStatus.NOT_FOUND, ["question is not exist"]);
+
+    return question;
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.createQuestionWithAnswersService = async (question, answers) => {
   // START Transaction
   await databaseConnection.beginTransaction();
@@ -50,9 +73,7 @@ exports.createQuestionWithAnswersService = async (question, answers) => {
     await databaseConnection.commit();
   } catch (err) {
     // Delete Uploaded File
-    await fs.promises.unlink(
-      `${__dirname}/../upload/${question.audio_file.split("/").reverse()[0]}`
-    );
+    await deleteAudioFile(question);
 
     // ROLLBACK transaction
     databaseConnection.rollback();
@@ -79,9 +100,69 @@ exports.getQuestionsWithAnswersService = async () => {
 };
 
 exports.deleteQuestionService = async (questionId) => {
+  await databaseConnection.beginTransaction();
   try {
-    await questionsRepository.deleteQuestionById(questionId);
+    const question = await checkQuestionExistence({ id: questionId });
+
+    await Promise.all([
+      questionsRepository.updateQuestion(
+        { id: questionId },
+        new Questions({ ...question, status: questionStatus.INACTIVE })
+      ),
+      questionAnswersRepository.deleteAnswer({ questionId }),
+    ]);
+
+    await databaseConnection.commit();
   } catch (err) {
+    await databaseConnection.rollback();
+    throw err;
+  }
+};
+
+exports.updateQuestionWithAnswersService = async (
+  questionId,
+  newQuestion,
+  answers
+) => {
+  // START Transaction
+  await databaseConnection.beginTransaction();
+  try {
+    // Validate answers
+    validateAnswers(answers);
+
+    // Validate Question Existence
+    const question = await checkQuestionExistence({
+      id: questionId,
+      status: questionStatus.ACTIVE,
+    });
+
+    // if new audio file is sent then delete old file
+    if (newQuestion.audio_file) {
+      await deleteAudioFile(question);
+    }
+
+    // Create Question
+    await questionsRepository.updateQuestion(
+      { id: questionId },
+      new Questions({ ...question, ...newQuestion })
+    );
+
+    // Delete All Answers
+    await questionAnswersRepository.deleteAnswer({ questionId });
+
+    // Create Related Answers
+    await questionAnswersRepository.insertAnswers(question.id, answers);
+
+    // COMMIT Transaction
+    await databaseConnection.commit();
+  } catch (err) {
+    // Delete Uploaded File
+    if (newQuestion.audio_file) await deleteAudioFile(newQuestion);
+
+    // ROLLBACK transaction
+    databaseConnection.rollback();
+
+    // throw err
     throw err;
   }
 };
