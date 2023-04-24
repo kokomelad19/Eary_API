@@ -6,6 +6,7 @@ const QuestionAnswers = require("../database/entities/questionAnswers");
 const questionsRepository = require("../database/repository/questionsRepository");
 const questionAnswersRepository = require("../database/repository/questionAnswersRepository");
 const databaseConnection = require("../database/connection");
+const { questionStatus } = require("../types/enums/questions");
 
 const validateAnswers = (answers) => {
   try {
@@ -57,6 +58,22 @@ exports.createQuestionWithAnswersService = async (question, answers) => {
     databaseConnection.rollback();
 
     // throw err
+    throw err;
+  }
+};
+
+exports.getQuestionsWithAnswersService = async () => {
+  try {
+    const total = await questionsRepository.countQuestionsByStatusWithAnswers(
+      questionStatus.ACTIVE,
+      "exam_questions.id"
+    );
+    const questions = await questionsRepository.getQuestionsByStatusWithAnswers(
+      questionStatus.ACTIVE
+    );
+
+    return { total, questions };
+  } catch (err) {
     throw err;
   }
 };
