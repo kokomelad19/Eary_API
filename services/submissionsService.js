@@ -34,7 +34,7 @@ exports.submitAnswerService = async (userId, answers) => {
     ).filter((q) => q !== undefined);
 
     // Construct Submission Object
-    const submission = new Submissions({ userId, answers });
+    const submission = Submissions.createFromUserRequest({ userId, answers });
 
     // Save Submission as historical data
     await submissionsRepository.createSubmission(submission);
@@ -47,6 +47,21 @@ exports.submitAnswerService = async (userId, answers) => {
     return submission;
   } catch (err) {
     await databaseConnection.rollback();
+    throw err;
+  }
+};
+
+exports.getSubmissionsService = async (userId, page, size) => {
+  try {
+    const total = await submissionsRepository.count(userId, "id");
+    const submissions = await submissionsRepository.findAllWithPagination(
+      userId,
+      page,
+      size
+    );
+
+    return { total, submissions };
+  } catch (err) {
     throw err;
   }
 };
