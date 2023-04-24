@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth");
 const { errorController } = require("./controllers/errorController");
 const profileRouter = require("./routes/profile");
 const usersManagementRouter = require("./routes/usersManagement");
+const questionsRouter = require("./routes/questions");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("*", notFoundRouterController);
 mainRouter.use("/auth", authRouter);
 mainRouter.use("/profile", profileRouter);
 mainRouter.use("/users-management", usersManagementRouter);
+mainRouter.use("/questions", questionsRouter);
 //#endregion
 
 //#region Global Error Handler

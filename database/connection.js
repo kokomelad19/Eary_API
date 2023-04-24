@@ -11,6 +11,11 @@ const databaseConnection = mysql.createConnection({
 
 // add database query runner method to be always promisified and use async/await with it
 databaseConnection.runQuery = util.promisify(databaseConnection.query);
+databaseConnection.beginTransaction = util.promisify(
+  databaseConnection.beginTransaction
+);
+databaseConnection.commit = util.promisify(databaseConnection.commit);
+databaseConnection.rollback = util.promisify(databaseConnection.rollback);
 
 // GET DDL Queries
 const createDatabaseTablesQueries = fs

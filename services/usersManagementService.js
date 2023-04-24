@@ -3,6 +3,7 @@ const usersRepository = require("../database/repository/usersRepository");
 const CustomError = require("../utils/customError");
 const { userTypes } = require("../types/enums/users");
 const HttpStatus = require("../constants/statusCodes");
+const databaseConnection = require("../database/connection");
 
 exports.getAllUsersService = async (findArgs, page, size) => {
   try {
@@ -23,6 +24,7 @@ exports.getAllUsersService = async (findArgs, page, size) => {
 };
 
 exports.createUserService = async (user) => {
+  await databaseConnection.beginTransaction();
   try {
     // Check that user argument is instance of User entity
     if (!(user instanceof User)) throw new CustomError(HttpStatus.BAD_REQUEST);
@@ -33,10 +35,12 @@ exports.createUserService = async (user) => {
     // Insert user in database
     await usersRepository.createUser(user);
 
+    await databaseConnection.commit();
     // return user
     delete user.password;
     return user;
   } catch (err) {
+    await databaseConnection.rollback();
     throw err;
   }
 };
