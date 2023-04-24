@@ -77,3 +77,11 @@ exports.getQuestionsWithAnswersService = async () => {
     throw err;
   }
 };
+
+exports.deleteQuestionService = async (questionId) => {
+  try {
+    await questionsRepository.deleteQuestionById(questionId);
+  } catch (err) {
+    throw err;
+  }
+};

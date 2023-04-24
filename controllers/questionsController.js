@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const {
   createQuestionWithAnswersService,
   getQuestionsWithAnswersService,
+  deleteQuestionService,
 } = require("../services/questionsService");
 const Questions = require("../database/entities/questions");
 const QuestionAnswers = require("../database/entities/questionAnswers");
@@ -25,4 +26,9 @@ exports.getQuestionsWithAnswersController = catchAsync(async (_req, res) => {
   const data = await getQuestionsWithAnswersService();
 
   return res.status(HttpStatus.OK).json(data);
+});
+
+exports.deleteQuestionController = catchAsync(async (req, res) => {
+  await deleteQuestionService(req.params.questionId);
+  return res.status(HttpStatus.NO_CONTENT).json();
 });

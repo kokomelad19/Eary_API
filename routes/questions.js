@@ -13,6 +13,7 @@ const {
 const {
   createQuestionWithAnswersController,
   getQuestionsWithAnswersController,
+  deleteQuestionController,
 } = require("../controllers/questionsController");
 
 const questionsRouter = Router();
@@ -32,5 +33,12 @@ questionsRouter.post(
 
 // GET ALL Questions [USER , ADMIN]
 questionsRouter.get("/", getQuestionsWithAnswersController);
+
+// DELETE Question [ADMIN]
+questionsRouter.delete(
+  "/:questionId",
+  isAdminMiddleware,
+  deleteQuestionController
+);
 
 module.exports = questionsRouter;

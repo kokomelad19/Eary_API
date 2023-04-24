@@ -52,6 +52,17 @@ class QuestionsRepository extends HelperRepository {
       throw err;
     }
   }
+
+  async deleteQuestionById(questionId) {
+    try {
+      await databaseConnection.runQuery(
+        "DELETE FROM exam_questions WHERE id = ?",
+        [questionId]
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = new QuestionsRepository();
