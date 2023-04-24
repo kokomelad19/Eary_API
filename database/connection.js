@@ -24,8 +24,20 @@ const createDatabaseTablesQueries = fs
   .trim();
 
 // Sync tables
-databaseConnection.syncTables = async () => {
+databaseConnection.syncTables = async (dropTable = false) => {
   try {
+    if (dropTable) {
+      const dropDatabaseTablesQueries = fs
+        .readFileSync(`${__dirname}/drop_tables.sql`)
+        .toString()
+        .trim();
+
+      const dropQueries = dropDatabaseTablesQueries.split(";");
+      for (const query of dropQueries) {
+        if (query.length > 0) await databaseConnection.runQuery(query);
+      }
+    }
+
     const queries = createDatabaseTablesQueries.split(";");
     for (const query of queries) {
       if (query.length > 0) await databaseConnection.runQuery(query);

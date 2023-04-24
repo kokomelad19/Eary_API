@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start": "node server.js"
+    "start:dev:dropTables": "cmd /C \"set DROP_TABLES=true&& nodemon server.js",
+    "start": "node server.js",
+    "start:dropTables": "cmd /C \"set DROP_TABLES=true&& node server.js"
   },
   "repository": {
     "type": "git",
