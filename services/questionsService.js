@@ -138,11 +138,6 @@ exports.updateQuestionWithAnswersService = async (
       status: questionStatus.ACTIVE,
     });
 
-    // if new audio file is sent then delete old file
-    if (newQuestion.audio_file) {
-      await deleteAudioFile(question);
-    }
-
     // Create Question
     await questionsRepository.updateQuestion(
       { id: questionId },

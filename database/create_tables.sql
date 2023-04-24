@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `user_submissions_history` (
 -- Submissions Answers
 CREATE TABLE IF NOT EXISTS `submissions_questions_answers` (
     `submissionId` INT UNSIGNED NOT NULL,
-    `questionId` INT UNSIGNED NOT NULL,
+    `questionText` VARCHAR(255) NOT NULL,
+    `questionAudioFile` VARCHAR(255) NOT NULL,
     `answerText` TEXT NOT NULL,
     `isValidAnswer` BOOLEAN NOT NULL,
     PRIMARY KEY (`submissionId` , `questionId`)
