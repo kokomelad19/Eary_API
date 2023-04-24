@@ -106,4 +106,5 @@ dist
 
 upload/*
 !upload/*.pdf
+!upload/ERD.*
 
