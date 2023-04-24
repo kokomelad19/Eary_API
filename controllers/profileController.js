@@ -3,7 +3,7 @@ const HttpStatus = require("../constants/statusCodes");
 const catchAsync = require("../utils/catchAsync");
 const { updateProfileService } = require("../services/profileService");
 
-exports.getProfileController = catchAsync(async (_req, res) => {
+exports.getProfileController = catchAsync(async (req, res) => {
   delete req.user.password;
   return res.status(HttpStatus.OK).json(req.user);
 });

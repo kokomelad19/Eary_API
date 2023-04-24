@@ -8,6 +8,7 @@ const { errorController } = require("./controllers/errorController");
 const profileRouter = require("./routes/profile");
 const usersManagementRouter = require("./routes/usersManagement");
 const questionsRouter = require("./routes/questions");
+const submissionsRouter = require("./routes/submissions");
 
 const app = express();
 
@@ -27,6 +28,7 @@ mainRouter.use("/auth", authRouter);
 mainRouter.use("/profile", profileRouter);
 mainRouter.use("/users-management", usersManagementRouter);
 mainRouter.use("/questions", questionsRouter);
+mainRouter.use("/submissions", submissionsRouter);
 //#endregion
 
 //#region Global Error Handler
