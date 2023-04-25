@@ -13,7 +13,7 @@ const profileRouter = Router();
 profileRouter.get("/", authorizationMiddleware, getProfileController);
 
 // Update Profile
-profileRouter.put(
+profileRouter.patch(
   "/",
   validateRequest(updateProfileSchema),
   authorizationMiddleware,

@@ -26,6 +26,7 @@ const validateRequest =
 
       return next();
     } catch (err) {
+      console.log("Validation Error ", err);
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR));

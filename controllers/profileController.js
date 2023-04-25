@@ -9,9 +9,12 @@ exports.getProfileController = catchAsync(async (req, res) => {
 });
 
 exports.updateProfileController = catchAsync(async (req, res) => {
+  const isNewPassword = req.body.password ? true : false;
+
   await updateProfileService(
     req.user.id,
-    new User({ ...req.user, ...req.body })
+    new User({ ...req.user, ...req.body }),
+    isNewPassword
   );
 
   return res
