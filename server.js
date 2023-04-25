@@ -23,7 +23,7 @@ process.on("SIGTERM", () => {
 // Sync Database Tables
 databaseConnection
   .syncTables(
-    process.env.DROP_TABLES ? rocess.env.DROP_TABLES.trim() === "true" : false
+    process.env.DROP_TABLES ? process.env.DROP_TABLES.trim() === "true" : false
   )
   .then(() => {
     console.log("Database Synced successfully 🚀");
