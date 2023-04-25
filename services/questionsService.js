@@ -123,7 +123,6 @@ exports.updateQuestionWithAnswersService = async (
     // Validate Question Existence
     const question = await checkQuestionExistence({
       id: questionId,
-      status: questionStatus.ACTIVE,
     });
 
     // Create Question
