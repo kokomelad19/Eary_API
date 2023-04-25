@@ -43,6 +43,10 @@ exports.createUserSchema = {
     isString: { errorMessage: "Phone is required" },
     isMobilePhone: { errorMessage: "Invalid Phone number" },
   },
+  status: {
+    isString: { errorMessage: "invalid status" },
+    isIn: { options: Object.values(userStatus) },
+  },
 };
 
 exports.updateUserSchema = {
@@ -65,7 +69,7 @@ exports.updateUserSchema = {
     isMobilePhone: { errorMessage: "Invalid Phone number" },
   },
   status: {
-    isString: { errorMessage: "invalid search" },
+    isString: { errorMessage: "invalid status" },
     isIn: { options: Object.values(userStatus) },
   },
 };
