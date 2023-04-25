@@ -23,7 +23,7 @@ const validateAnswers = (answers) => {
   }
 };
 
-const deleteAudioFile = async (question) => {
+exports.deleteAudioFile = async (question) => {
   try {
     await fs.promises.unlink(
       `${__dirname}/../${process.env.UPLOAD_FOLDER_NAME}/${
@@ -75,7 +75,7 @@ exports.createQuestionWithAnswersService = async (question, answers) => {
     await databaseConnection.commit();
   } catch (err) {
     // Delete Uploaded File
-    await deleteAudioFile(question);
+    await this.deleteAudioFile(question);
 
     // ROLLBACK transaction
     databaseConnection.rollback();
@@ -85,14 +85,14 @@ exports.createQuestionWithAnswersService = async (question, answers) => {
   }
 };
 
-exports.getQuestionsWithAnswersService = async () => {
+exports.getQuestionsWithAnswersService = async (status) => {
   try {
     const total = await questionsRepository.countQuestionsByStatusWithAnswers(
-      questionStatus.ACTIVE,
+      status ?? questionStatus.ACTIVE,
       "exam_questions.id"
     );
     const questions = await questionsRepository.getQuestionsByStatusWithAnswers(
-      questionStatus.ACTIVE
+      status ?? questionStatus.ACTIVE
     );
 
     return { total, questions };
@@ -102,21 +102,9 @@ exports.getQuestionsWithAnswersService = async () => {
 };
 
 exports.deleteQuestionService = async (questionId) => {
-  await databaseConnection.beginTransaction();
   try {
-    const question = await checkQuestionExistence({ id: questionId });
-
-    await Promise.all([
-      questionsRepository.updateQuestion(
-        { id: questionId },
-        new Questions({ ...question, status: questionStatus.INACTIVE })
-      ),
-      questionAnswersRepository.deleteAnswer({ questionId }),
-    ]);
-
-    await databaseConnection.commit();
+    await questionsRepository.deleteQuestionById(questionId);
   } catch (err) {
-    await databaseConnection.rollback();
     throw err;
   }
 };
@@ -154,7 +142,7 @@ exports.updateQuestionWithAnswersService = async (
     await databaseConnection.commit();
   } catch (err) {
     // Delete Uploaded File
-    if (newQuestion.audio_file) await deleteAudioFile(newQuestion);
+    if (newQuestion.audio_file) await this.deleteAudioFile(newQuestion);
 
     // ROLLBACK transaction
     databaseConnection.rollback();

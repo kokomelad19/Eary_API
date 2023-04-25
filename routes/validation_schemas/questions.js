@@ -1,3 +1,5 @@
+const { questionStatus } = require("../../types/enums/questions");
+
 exports.createQuestionsWithAnswers = {
   name: {
     isString: { errorMessage: "question name is required" },
@@ -19,6 +21,13 @@ exports.createQuestionsWithAnswers = {
   },
   "answers.*.isValid": {
     isBoolean: { errorMessage: "You must mark valid answer for each question" },
+  },
+  status: {
+    isString: { errorMessage: "invalid status" },
+    isIn: {
+      options: [Object.values(questionStatus)],
+      errorMessage: "invalid status",
+    },
   },
 };
 
@@ -44,5 +53,23 @@ exports.updateQuestionsWithAnswers = {
   },
   "answers.*.isValid": {
     isBoolean: { errorMessage: "You must mark valid answer for each question" },
+  },
+  status: {
+    isString: { errorMessage: "invalid status" },
+    isIn: {
+      options: [Object.values(questionStatus)],
+      errorMessage: "invalid status",
+    },
+  },
+};
+
+exports.getAllQuestionsFilterForAdminSchema = {
+  status: {
+    isString: { errorMessage: "invalid status" },
+    isIn: {
+      options: [Object.values(questionStatus)],
+      errorMessage: "invalid status",
+    },
+    optional: true,
   },
 };

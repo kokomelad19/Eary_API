@@ -8,6 +8,7 @@ const {
 const Questions = require("../database/entities/questions");
 const QuestionAnswers = require("../database/entities/questionAnswers");
 const HttpStatus = require("../constants/statusCodes");
+const { userTypes } = require("../types/enums/users");
 
 exports.createQuestionWithAnswersController = catchAsync(async (req, res) => {
   await createQuestionWithAnswersService(
@@ -23,8 +24,10 @@ exports.createQuestionWithAnswersController = catchAsync(async (req, res) => {
     .json({ message: "question created successfully 🔥" });
 });
 
-exports.getQuestionsWithAnswersController = catchAsync(async (_req, res) => {
-  const data = await getQuestionsWithAnswersService();
+exports.getQuestionsWithAnswersController = catchAsync(async (req, res) => {
+  const status =
+    req.user.type === userTypes.ADMIN ? req.query.status ?? null : null;
+  const data = await getQuestionsWithAnswersService(status);
 
   return res.status(HttpStatus.OK).json(data);
 });

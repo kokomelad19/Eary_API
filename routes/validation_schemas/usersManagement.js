@@ -14,9 +14,11 @@ exports.getAllUsersQuerySchema = {
     optional: true,
   },
   status: {
-    isString: { errorMessage: "invalid search" },
-    isIn: { options: Object.values(userStatus) },
-    optional: true,
+    isString: { errorMessage: "invalid status" },
+    isIn: {
+      options: [Object.values(userStatus)],
+      errorMessage: "invalid status",
+    },
   },
 };
 
@@ -45,7 +47,10 @@ exports.createUserSchema = {
   },
   status: {
     isString: { errorMessage: "invalid status" },
-    isIn: { options: Object.values(userStatus) },
+    isIn: {
+      options: [Object.values(userStatus)],
+      errorMessage: "invalid status",
+    },
   },
 };
 
@@ -70,6 +75,9 @@ exports.updateUserSchema = {
   },
   status: {
     isString: { errorMessage: "invalid status" },
-    isIn: { options: Object.values(userStatus) },
+    isIn: {
+      options: [Object.values(userStatus)],
+      errorMessage: "invalid status",
+    },
   },
 };

@@ -10,6 +10,7 @@ const {
 const {
   createQuestionsWithAnswers,
   updateQuestionsWithAnswers,
+  getAllQuestionsFilterForAdminSchema,
 } = require("./validation_schemas/questions");
 const {
   createQuestionWithAnswersController,
@@ -24,7 +25,11 @@ const questionsRouter = Router();
 questionsRouter.use(authorizationMiddleware, isActiveUserMiddleware);
 
 // GET ALL Questions [USER , ADMIN]
-questionsRouter.get("/", getQuestionsWithAnswersController);
+questionsRouter.get(
+  "/",
+  validateRequest(getAllQuestionsFilterForAdminSchema, "query"),
+  getQuestionsWithAnswersController
+);
 
 // CREATE QUESTION [ADMIN]
 questionsRouter.post(

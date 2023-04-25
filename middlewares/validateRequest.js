@@ -1,6 +1,7 @@
 const { checkSchema } = require("express-validator");
 const HttpStatus = require("../constants/statusCodes");
 const ErrorResponse = require("../utils/errorResponse");
+const { deleteAudioFile } = require("../services/questionsService");
 
 const validateRequest =
   (schema, target = "body") =>
@@ -16,6 +17,9 @@ const validateRequest =
       });
 
       if (result.length > 0 && result.some((res) => res.errors.length > 0)) {
+        if (req.file) {
+          await deleteAudioFile(req.body);
+        }
         return res.status(HttpStatus.BAD_REQUEST).json(
           new ErrorResponse(
             HttpStatus.BAD_REQUEST,
@@ -26,6 +30,10 @@ const validateRequest =
 
       return next();
     } catch (err) {
+      if (req.file) {
+        await deleteAudioFile(req.body);
+      }
+
       console.log("Validation Error ", err);
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
