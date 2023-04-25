@@ -47,7 +47,8 @@ exports.createUserService = async (user) => {
 
 exports.updateUserService = async (userId, newUser) => {
   try {
-    const user = await this.getUserByIdService(userId);
+    const includeUserPassword = true;
+    const user = await this.getUserByIdService(userId, includeUserPassword);
 
     await usersRepository.updateUser(
       { id: userId },
@@ -66,7 +67,7 @@ exports.deleteUserService = async (userId) => {
   }
 };
 
-exports.getUserByIdService = async (userId) => {
+exports.getUserByIdService = async (userId, includePassword = false) => {
   try {
     const user = await usersRepository.findOne({
       id: userId,
@@ -75,7 +76,7 @@ exports.getUserByIdService = async (userId) => {
     if (!user)
       throw new CustomError(HttpStatus.NOT_FOUND, ["user is not exist"]);
 
-    delete user.password;
+    if (!includePassword) delete user.password;
     return user;
   } catch (err) {
     throw err;
