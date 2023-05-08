@@ -3,3 +3,5 @@ upload/*
 !upload/*.pdf
 !upload/ERD.*
 
+
+.env
