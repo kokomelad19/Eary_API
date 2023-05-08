@@ -23,5 +23,6 @@ exports.updateProfileSchema = {
   password: {
     isString: { errorMessage: "Password is required" },
     isStrongPassword: { errorMessage: "Password is too poor" },
+    optional: true,
   },
 };
