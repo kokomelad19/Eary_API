@@ -13,13 +13,6 @@ process.on("unhandledRejection", (err) => {
   console.log("UNHANDLED REJECTION! 💥", err);
 });
 
-process.on("SIGTERM", () => {
-  console.log("👋 SIGTERM RECEIVED. Shutting down gracefully");
-  server.close(() => {
-    console.log("💥 Process terminated!");
-  });
-});
-
 // Sync Database Tables
 databaseConnection
   .syncTables(
